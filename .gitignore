@@ -1,0 +1,14 @@
+/vendor/               # Composer dependencies
+composer.lock          # Composer lock file
+.env                   # Environment variables
+node_modules/          # Node dependencies (if you're using npm/yarn for frontend)
+*.log                  # Log files
+*.cache                # Cache files
+*.tmp                  # Temporary files
+*.swp                  # Swap files
+/tmp/                  # AMPPS temporary files
+/public/.htaccess      # Public .htaccess file (if generated dynamically)
+.idea/                 # PHPStorm project settings
+*.iml                  # PHPStorm module files
+.DS_Store              # macOS Finder metadata
+Thumbs.db              # Windows thumbnail cache
