@@ -12,3 +12,4 @@ node_modules/          # Node dependencies (if you're using npm/yarn for fronten
 *.iml                  # PHPStorm module files
 .DS_Store              # macOS Finder metadata
 Thumbs.db              # Windows thumbnail cache
+/node_modules
