@@ -12,7 +12,13 @@
     <h1>PHP 2024</h1>
 </header>
 <?php
-echo "Testing index prio.";
+$username = "Bob";
+echo "Username: " . $username . "<br>";
+$varTest = $username;
+echo "VarTest: " .  $varTest . "<br>";
+$username = "Joe";
+echo "Changed username: " . $username . "<br>";
+echo "Check varTest: " . $varTest;
 ?>
 </body>
 
