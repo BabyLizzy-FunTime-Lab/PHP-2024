@@ -9,7 +9,9 @@
 
 <body>
 <header>
-    <h1>PHP 2024</h1>
+    <h1>Test Environment</h1>
+    <a href="http://localhost/PHP-2024/">Home</a> |
+    <a href="http://localhost/PHP-2024/tester.php">Test Environment</a>
 </header>
 <section>
     <header>

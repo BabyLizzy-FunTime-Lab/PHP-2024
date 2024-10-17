@@ -15,6 +15,8 @@ $dreamGuitar = "Fender Jag-Stang";
 <body>
 <header>
     <h1>Hello World</h1>
+    <a href="http://localhost/PHP-2024/">Home</a> |
+    <a href="http://localhost/PHP-2024/tester.php">Test Environment</a>
 </header>
 <p>
     Full Name: <?php echo $name . " " . $lastName . "<br>"; ?>
