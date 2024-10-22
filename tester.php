@@ -40,7 +40,81 @@
     echo "$testArray[1]";
     ?>
 </section>
+<section>
+    <header>
+        <h2>Rekentabel</h2>
+    </header>
+    <?php
+    function tableOfTen($multiplicatorLow, $multiplicatorHigh) {
+        $resultsMemory = "";
+        $tableColumns = $multiplicatorHigh - $multiplicatorLow + 1;
+        echo "<tr><th colspan='$tableColumns'>Multiplication by 10</th></tr>";
+        for($base = 1; $base <= 10; $base++) {
+            for ($multiplicator = $multiplicatorLow; $multiplicator <= $multiplicatorHigh; $multiplicator++) {
+                $result = $base * $multiplicator;
+                $resultsMemory = $resultsMemory . "<td> $base x $multiplicator = $result </td>";
+                if($multiplicator === 12) {
+                    echo "<tr>$resultsMemory</tr>";
+                    $resultsMemory = "";
+                }
+            }
+        }
+    }
+    ?>
+    <table>
+        <?php
+        tableOfTen(8, 12);
+        ?>
+    </table>
+</section>
+<section>
+    <header>
+        <h2>BMI</h2>
+    </header>
+    <?php
+    function BMI($length) {
+        $minWeight = 40;
+        $maxWeight = 150;
+        echo "<tr><th>BMI overzicht bij een lengte van $length m</th></tr>";
+        for ($weight = $minWeight; $weight <= $maxWeight; $weight += 10) {
+            $bmi = round($weight/(pow($length, 2)), 2);
+            switch ($bmi) {
+                case $bmi < 18.5:
+                    $resultOfBmi = "ondergewicht";
+                    break;
+                case $bmi >= 18.5 && $bmi <= 24.9:
+                    $resultOfBmi = "gezond gewicht";
+                    break;
+                case $bmi >= 25 && $bmi <= 30;
+                    $resultOfBmi = "overgewicht";
+                    break;
+                case $bmi > 30:
+                    $resultOfBmi = "obesitas";
+                    break;
+                default:
+                    $resultOfBmi = "normaal gewicht";
+            }
+            echo "<tr><td>Bij een gewicht van $weight kg is de BMI $bmi, $resultOfBmi</td></tr>";
+        }
+    }
+    ?>
+    <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+        <label for="length">
+            Input lengte in meters:
+            <input name="length" class="inputField length" type="number" step="0.01">
+        </label>
+        <input type="submit" name="lengthBMI">
+    </form>
+    <table>
+        <?php
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['lengthBMI'])) {
+            $input_length = $_POST['length'];
+            BMI($input_length);
+        }
+        ?>
+    </table>
 
+</section>
 </body>
 
 </html>
