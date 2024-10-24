@@ -48,11 +48,11 @@
     function tableOfTen($multiplicatorLow, $multiplicatorHigh) {
         $resultsMemory = "";
         $tableColumns = $multiplicatorHigh - $multiplicatorLow + 1;
-        echo "<tr><th colspan='$tableColumns'>Multiplication by 10</th></tr>";
+        echo "<tr><th class='mathTable__header' colspan='$tableColumns'>Multiplication by 10</th></tr>";
         for($base = 1; $base <= 10; $base++) {
             for ($multiplicator = $multiplicatorLow; $multiplicator <= $multiplicatorHigh; $multiplicator++) {
                 $result = $base * $multiplicator;
-                $resultsMemory = $resultsMemory . "<td> $base x $multiplicator = $result </td>";
+                $resultsMemory = $resultsMemory . "<td class='mathTable__data'> $base x $multiplicator = $result </td>";
                 if($multiplicator === 12) {
                     echo "<tr>$resultsMemory</tr>";
                     $resultsMemory = "";
@@ -61,7 +61,7 @@
         }
     }
     ?>
-    <table>
+    <table class="mathTable">
         <?php
         tableOfTen(8, 12);
         ?>
@@ -73,9 +73,14 @@
     </header>
     <?php
     function BMI($length) {
+        // Weight is in kg.
         $minWeight = 40;
         $maxWeight = 150;
-        echo "<tr><th>BMI overzicht bij een lengte van $length m</th></tr>";
+        echo "<tr>
+                <th style='border-bottom: 2px solid black; text-align: left;'>
+                    BMI overzicht bij een lengte van $length m
+                </th>
+            </tr>";
         for ($weight = $minWeight; $weight <= $maxWeight; $weight += 10) {
             $bmi = round($weight/(pow($length, 2)), 2);
             switch ($bmi) {
@@ -94,18 +99,22 @@
                 default:
                     $resultOfBmi = "normaal gewicht";
             }
-            echo "<tr><td>Bij een gewicht van $weight kg is de BMI $bmi, $resultOfBmi</td></tr>";
+            echo "<tr>
+                    <td>
+                        Bij een gewicht van $weight kg is de BMI $bmi, $resultOfBmi
+                    </td>
+                </tr>";
         }
     }
     ?>
     <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
         <label for="length">
-            Input lengte in meters:
+            Lengte in meters:
             <input name="length" class="inputField length" type="number" step="0.01">
         </label>
         <input type="submit" name="lengthBMI">
     </form>
-    <table>
+    <table style="margin-top: 1em; margin-bottom: 3em;">
         <?php
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['lengthBMI'])) {
             $input_length = $_POST['length'];

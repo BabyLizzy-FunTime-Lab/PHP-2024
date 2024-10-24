@@ -2,7 +2,7 @@ body {
     background-color: rosybrown;
 
 }
-th, td {
+.mathTable__header, .mathTable__data {
     padding-left: 1em;
     padding-right: 1em;
 }
