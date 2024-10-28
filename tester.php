@@ -122,6 +122,15 @@
         }
         ?>
     </table>
+</section>
+<section>
+    <?php
+    // This will display all info on the current php version and the server.
+    // phpinfo();
+    ?>
+    <header>
+        <h2>Functions and Objects</h2>
+    </header>
 
 </section>
 </body>
