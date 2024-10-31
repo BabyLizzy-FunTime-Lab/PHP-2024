@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style/main.css">
+    <link rel="stylesheet" type="text/css" href="style/normalize.css">
 </head>
 
 <body>
@@ -122,8 +123,23 @@
         }
         ?>
     </table>
-
 </section>
+<section>
+    <?php
+    // This will display all info on the current php version and the server.
+    // phpinfo();
+    ?>
+    <header>
+        <h2>Functions and Objects</h2>
+    </header>
+    <?php
+    print_r("derp");
+    ?>
+</section>
+
+<footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
+<h3>Footer</h3>
+</footer>
 </body>
 
 </html>
