@@ -136,7 +136,129 @@
     print_r("derp");
     ?>
 </section>
+<section>
+    <?php
+    function square($sideLength) {
+        $width = $sideLength;
+        $height = $sideLength;
 
+        // Create a blank image.
+        $image = imagecreatetruecolor($width, $height);
+
+        // Set colors.
+        // Set colors
+        $backgroundColor = imagecolorallocate($image, 255, 255, 255); // White background
+        $squareColor = imagecolorallocate($image, 0, 0, 0);           // Black square
+
+        // Fill the background
+        imagefill($image, 0, 0, $backgroundColor);
+
+        // Draw a square
+        $squareSize = 100;
+        $x = ($width - $squareSize) / 2;
+        $y = ($height - $squareSize) / 2;
+        imagefilledrectangle($image, $x, $y, $x + $squareSize, $y + $squareSize, $squareColor);
+
+
+        // Capture the output buffer
+        ob_start();
+        imagepng($image);
+        $imageData = ob_get_clean();
+
+        // Free memory
+        imagedestroy($image);
+
+        // Encode the image data as base64
+        $base64 = base64_encode($imageData);
+
+        // Output the image as a data URI
+        echo '<img src="data:image/png;base64,' . $base64 . '" alt="Square Image" />';
+    }
+
+    ?>
+    <h2>Pythagoras</h2>
+    <?php
+    square(200);
+//    phpinfo();
+    ?>
+    <?php
+    // Set the image dimensions
+    $width = 200;
+    $height = 200;
+
+    // Create a blank image
+    $image = imagecreatetruecolor($width, $height);
+
+    // Set background color
+    $backgroundColor = imagecolorallocate($image, 255, 255, 255); // White background
+    imagefill($image, 0, 0, $backgroundColor);
+
+    // Function to create and (optionally) rotate a square
+    function createSquare($size, $angle, $color) {
+        $squareImage = imagecreatetruecolor($size, $size);
+
+        // Set transparent background for the square
+        $transparent = imagecolorallocatealpha($squareImage, 0, 0, 0, 127);
+        imagefill($squareImage, 0, 0, $transparent);
+        imagesavealpha($squareImage, true); // Keep transparency
+
+        // Draw the square
+        imagefilledrectangle($squareImage, 0, 0, $size, $size, $color);
+
+        // Rotate if an angle is specified
+        if ($angle != 0) {
+            $squareImage = imagerotate($squareImage, $angle, $transparent);
+            imagesavealpha($squareImage, true); // Keep transparency after rotation
+        }
+
+        return $squareImage;
+    }
+
+    // Set colors for each square
+    $squareColor1 = imagecolorallocate($image, 0, 0, 0);      // Black
+    $squareColor2 = imagecolorallocate($image, 255, 0, 0);    // Red
+
+    // Define size, angle, and position for each square
+    $squareSize = 50;   // Size of each square
+
+    // Create and position the first square
+    $rotatedSquare1 = createSquare($squareSize, 0, $squareColor1); // No rotation
+    $x1 = 75; // Position for first square
+    $y1 = 125;
+    imagecopy($image, $rotatedSquare1, $x1, $y1, 0, 0, imagesx($rotatedSquare1), imagesy($rotatedSquare1));
+
+    // Calculate the size of the second square (rotated)
+    $newSize = $squareSize * 0.707; // Approx. size for the next square
+    // Calculate diagonal.
+    $diagonalDistance = sqrt(pow($newSize, 2) + pow($newSize, 2));
+
+    // Create and position the second square
+    $x2 = $x1 - ($newSize * sqrt(2) / 2); // Horizontal adjustment
+    $y2 = $y1 - ($newSize * sqrt(2) / 2) - ($diagonalDistance/2); // Vertical adjustment
+
+    $rotatedSquare2 = createSquare($newSize, 45, $squareColor2); // 45-degree rotation
+    imagecopy($image, $rotatedSquare2, $x2, $y2, 0, 0, imagesx($rotatedSquare2), imagesy($rotatedSquare2));
+
+    // Capture the output buffer
+    ob_start();
+    imagepng($image);
+    $imageData = ob_get_clean();
+
+    // Free memory
+    imagedestroy($image);
+    imagedestroy($rotatedSquare1);
+    imagedestroy($rotatedSquare2);
+
+    // Encode the image data as base64
+    $base64 = base64_encode($imageData);
+
+    // Output the image as a data URI
+    echo '<img src="data:image/png;base64,' . $base64 . '" alt="Two Squares Image" />';
+    ?>
+</section>
+<section>
+
+</section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
 </footer>
