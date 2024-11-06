@@ -111,7 +111,7 @@
     <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
         <label for="length">
             Lengte in meters:
-            <input name="length" class="inputField length" type="number" step="0.01">
+            <input id="length" name="length" class="inputField length" type="number" step="0.01">
         </label>
         <input type="submit" name="lengthBMI">
     </form>
@@ -257,7 +257,50 @@
     ?>
 </section>
 <section>
+    <?php
+    function reverseString($string) :void {
+        echo strrev($string);
+    }
+    ?>
+    <h2>String Reverse</h2>
+    <p>
+        Start string: 1234<br>
+        End string: <?php reverseString("1234")?>
+    </p>
+</section>
+<section>
+    <?php
+    function findFactorial($number){
+        $factorial = 1;
+        static $startNumber = 1;
+        $startNumber = $number;
+        static $loopNumber = 0;
+        static $multiplier = 1;
+        static $result = 1;
 
+        if ($loopNumber > $startNumber) {
+            echo $multiplier . "<br>";
+            echo "Problem <br>";
+            return;
+        }
+
+        if($startNumber == 0) {
+            echo $result;
+        }
+        $multiplier += $factorial;
+        $result = $result * $multiplier;
+        $loopNumber++;
+        if($startNumber === $multiplier) {
+            echo $result;
+        } else {
+            findFactorial($number);
+        }
+    }
+    ?>
+    <h2>Factorial of 7 Recursive Function</h2>
+    <p>
+        <?php findFactorial(7); ?>
+    </p>
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
