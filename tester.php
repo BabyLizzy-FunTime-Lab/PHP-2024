@@ -302,6 +302,14 @@
         <?php findFactorial(7); ?>
     </p>
 </section>
+<section>
+    <h2>Practical PHP</h2>
+    <?php
+    printf("There are %d items in your basket",  3);
+    echo "<br>";
+    printf("There are %b items in your basket",  3);
+    ?>
+</section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
 </footer>
