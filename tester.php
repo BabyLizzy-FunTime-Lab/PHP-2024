@@ -309,6 +309,24 @@
     echo "<br>";
     printf("There are %b items in your basket",  3);
     ?>
+    <h3>File check</h3>
+    <?php
+    $fh = fopen( "textFileFolder/testFile.txt", 'w+') or die("Cloud not write to file");
+    $text = <<<_END
+Line 1
+Line 2
+Line 3
+_END;
+    fwrite($fh, $text) or die("Cloud not write to file");
+    fclose($fh);
+    echo "File 'textFileFolder/testFile.txt' written."
+    ?>
+    <p>
+        <?php
+        if(file_exists("textFileFolder/testFile.txt")) echo "File exists";
+        else echo "File does not exist";
+        ?>
+    </p>
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
