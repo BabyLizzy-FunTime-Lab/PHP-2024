@@ -309,7 +309,7 @@
     echo "<br>";
     printf("There are %b items in your basket",  3);
     ?>
-    <h3>File check</h3>
+    <h3>File check and File creation</h3>
     <?php
     $fh = fopen( "textFileFolder/testFile.txt", 'w+') or die("Cloud not write to file");
     $text = <<<_END
@@ -327,6 +327,60 @@ _END;
         else echo "File does not exist";
         ?>
     </p>
+    <h3>Read File</h3>
+    <p>
+        Read one line: <br>
+        <?php
+        $fh = fopen("textFileFolder/testFile.txt", 'r') or die("File not found.");
+        $line = fgets($fh);
+        fclose($fh);
+        echo $line;
+        ?>
+    </p>
+    <p>
+        Read select length: <br>
+        <?php
+        $fh = fopen("textFileFolder/testFile.txt", 'r') or die("File not found.");
+        $text = fread($fh, 3);
+        fclose($fh);
+        echo $text;
+        ?>
+    </p>
+    <p>
+        Read all lines: <br>
+        <?php
+        $fh = fopen("textFileFolder/testFile.txt", 'r') or die("File not found.");
+        if ($fh) {
+            while (($line = fgets($fh)) !== false) {
+                echo $line . "<br>"; // Echo each line with a line break
+            }
+            fclose($fh); // Close the file
+        } else {
+            echo "Error opening the file.";
+        }
+        ?>
+    </p>
+    <h3>Copy File</h3>
+    <p>
+        <?php
+        if(!copy("textFileFolder/testFile.txt", "textFileFolder/testFile2.txt")) echo "Could not copy";
+        else echo "File copied";
+        ?>
+    </p>
+    <h3>Uploading Files</h3>
+    <?php
+    if($_FILES)
+    {
+        $imagePath = "uploads/" . $_FILES['filename']['name'];
+        $name = $_FILES['filename']['name'];
+        move_uploaded_file($_FILES['filename']['tmp_name'], $imagePath);
+        echo "Uploaded image '$name' <br> <img src='$imagePath'>";
+    }
+    ?>
+    <form method="post" action="tester.php" enctype="multipart/form-data">
+        Select File: <input type="file" name="filename" size="10">
+        <input type="submit" value="Upload">
+    </form>
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
