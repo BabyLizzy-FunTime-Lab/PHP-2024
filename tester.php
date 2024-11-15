@@ -373,14 +373,47 @@ _END;
     {
         $imagePath = "uploads/" . $_FILES['filename']['name'];
         $name = $_FILES['filename']['name'];
-        move_uploaded_file($_FILES['filename']['tmp_name'], $imagePath);
-        echo "Uploaded image '$name' <br> <img src='$imagePath'>";
+        switch ($_FILES['filename']['type'])
+        {
+            case 'image/jpeg': $ext = 'jpg'; break;
+            case 'image/gif': $ext = 'gif'; break;
+            case 'image/png': $ext = 'png'; break;
+            case 'image/tiff': $ext = 'tif'; break;
+            default: $ext = ''; break;
+        }
+        if($ext)
+        {
+            move_uploaded_file($_FILES['filename']['tmp_name'], $imagePath);
+            echo "Uploaded image '$name' <br> <img style='height: 15em' src='$imagePath'>";
+        }
+        else echo "Uploaded file is not an accepted image file.";
     }
+    else echo "No image has been uploaded";
     ?>
     <form method="post" action="tester.php" enctype="multipart/form-data">
-        Select File: <input type="file" name="filename" size="10">
+        Select aJPG, GIF, PNG or TIF File:
+        <input type="file" name="filename" size="10"><br>
         <input type="submit" value="Upload">
     </form>
+    <h2>System command</h2>
+    <p>
+    <?php
+    $cmd = "dir";
+    // $cmd = "ls"; //Linux, Unix, Mac
+    exec(escapeshellcmd($cmd), $output, $status);
+    if($status) echo "Exec command failed";
+    else
+    {
+        echo "<pre>";
+        foreach($output as $line) echo htmlspecialchars("$line\n");
+        echo "</pre>";
+    }
+    ?>
+    </p>
+</section>
+<section>
+    <h2>Arrays Oefenopgave 1</h2>
+
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
