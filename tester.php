@@ -413,7 +413,35 @@ _END;
 </section>
 <section>
     <h2>Arrays Oefenopgave 1</h2>
-
+    <p>
+        <?php
+        $colorsArray =["pink", "white", "black"];
+        echo "Opgave 1: <br>";
+        echo "Her hair was $colorsArray[1], her pants were $colorsArray[2] and her panties....$colorsArray[0].<br>"
+        ?>
+    </p>
+    <p>
+        <?php
+        echo "Opgave 2: <br>";
+        $cars = array (
+            "Volvo" => array("color" => "Blue"),
+            "Audi" => array("color" => "Green"),
+            "BMW" => array("color" => "Yellow"),
+            "Skoda" => array("color" => "yellow")
+        );
+        foreach ($cars as $car => $carData) {
+            echo "<li>$car@$carData[color]</li>";
+        }
+        ?>
+    </p>
+</section>
+<section>
+    <h2>Arrays Oefenopgave 2</h2>
+    <?php
+    $score = 12344;
+    $scoreBoard = (array) $score;
+    echo $scoreBoard[0];
+    ?>
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
