@@ -440,8 +440,45 @@ _END;
     <?php
     $score = 12344;
     $scoreBoard = (array) $score;
-    echo $scoreBoard[0];
+    echo "$scoreBoard[0]<br>";
     ?>
+    <?php
+    $time = strtotime('2004/01/01');
+    echo "Date: " . date('H:\i:s', $time) . "<br>";
+    ?>
+</section>
+<section>
+    <h2>Emotional Bunnies</h2>
+    <?php
+    class BunnyFactory {
+        private string $ears = "<code>&nbsp;()_()</code><br>";
+        private string $feet = '<code>("")("")</code><br>';
+        private string $emotion;
+        private function emotionSelect() :string {
+            $emotions = array(
+                "happy" => "&nbsp;(^.^)<br>",
+                "surprised" => "&nbsp;(o.o)<br>",
+                "angry" => "&nbsp;(@.@)<br>",
+                "disappointed" => "&nbsp;(>.<)<br>",
+                "inquisitive" => "&nbsp;(?.?)<br>",
+                "thoughtful" => "&nbsp;(&.&)<br>"
+            );
+            return "<code>" . $emotions[array_rand($emotions)] . "</code>";
+        }
+        public function generateBunny() :string {
+            $this->emotion = $this->emotionSelect();
+            return $this->ears . $this->emotion . $this->feet;
+        }
+    }
+    $bunnyTest = new BunnyFactory();
+    echo $bunnyTest->generateBunny();
+    // Now we make a table of 10 bunnies and compare top to bottom row for score.
+    // Only even numbers so we have rows of equal length.
+
+    ?>
+    <table>
+        <tr><th colspan="5">Bunnies</th></tr>
+    </table>
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
