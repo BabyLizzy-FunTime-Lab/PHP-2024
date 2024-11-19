@@ -454,7 +454,7 @@ _END;
         private string $ears = "<code>&nbsp;()_()</code><br>";
         private string $feet = '<code>("")("")</code><br>';
         private string $emotion;
-        private array $bunnyCensus = [];
+        private array $bunnyRecord = [];
         private function emotionSelect() :void {
             $emotions = array(
                 "happy" => "&nbsp;(^.^)<br>",
@@ -467,22 +467,43 @@ _END;
             $selectedEmotionName = array_rand($emotions);
             $selectedEmotion = $emotions[$selectedEmotionName];
             $this->emotion = "<code>" . $selectedEmotion . "</code>";
-            $this->bunnyCensus[] = $selectedEmotionName;
+            $this->bunnyRecord[] = $selectedEmotionName;
         }
         public function generateBunny() :string {
             $this->emotionSelect();
             return $this->ears . $this->emotion . $this->feet;
         }
-        public function checkScores() :void {
-            // Array count divided by 2.
-            // Then compare top row to bottom.
-            // Save result to text file.
-            print_r($this->bunnyCensus);
-            // return all saved scores ready to be added to the bunnies table.
+        public function getScores() :array {
+            $score = 0;
+            // First we calculate on what index the second row starts.
+            $bunnyCount = count($this->bunnyRecord);
+            $secondRowStartIndex = $bunnyCount/2;
+            $secondRowIndex = $secondRowStartIndex;
+            // Then compare top row to bottom row.
+            for($recordIndex = 0; $recordIndex <= $secondRowStartIndex-1; $recordIndex++) {
+                if($this->bunnyRecord[$recordIndex] === $this->bunnyRecord[$secondRowIndex]) {
+                    // If top matches bottom we add to the score.
+                    $score++;
+                }
+                // Then we move to the next column comparison.
+                $secondRowIndex++;
+            }
+            // Save latest score result to text file. This should be a private method.
+            $file = fopen( "bunnyScore.txt", 'a+') or die("Cloud not write to file");
+            $textScore = "Score: " . $score . "\n";
+            fwrite($file, $textScore) or die("Cloud not write to file");
+            fclose($file);
+            // Read all scores and store them in the scoreResults array. Private method.
+            $scoreResults = [];
+            $readFile = fopen("bunnyScore.txt", 'r') or die("File not found.");
+            while (($recordedScore = fgets($readFile)) !== false) {
+                $scoreResults[] = $recordedScore;
+            }
+            fclose($readFile); // Close the file
+            // Returns all saved scores ready to be added to the bunnies table in an array.
+            return $scoreResults;
         }
     }
-    $bunnyTest = new BunnyFactory();
-    echo $bunnyTest->generateBunny();
     // Now we make a table of 10 bunnies and compare top to bottom row for score.
     function makeBunnyGroup($groupSize) :void {
         // The input number must be even.
@@ -493,6 +514,9 @@ _END;
         $bunny = new BunnyFactory();
         $numberOfRows = 1;
         $columnsNeeded = $groupSize/2;
+        // First we render the table header.
+        echo "<tr><th colspan='$columnsNeeded'>Bunnies</th></tr>";
+        // Then we render the rows with the bunnies.
         while ($numberOfRows <= 2) {
             echo "<tr>";
             for ($columns = 1; $columns <= $columnsNeeded; $columns++) {
@@ -503,12 +527,24 @@ _END;
                 }
             }
         }
-        // The checkScore should return the score so it can be added to the table.
-        $bunny->checkScores();
+        // The scores are added to the bunnies table.
+        $scoreResults = $bunny->getScores();
+        $scoreResultsCount = count($scoreResults);
+        $columnCount = 0;
+        echo "<tr>";
+        foreach ($scoreResults as $index => $score) {
+            $columnCount++;
+            if($index+1 === $scoreResultsCount) echo "<td class='mathTable__data'><strong>$score</strong></td>";
+            else echo "<td class='mathTable__data'>$score</td>";
+            if($columnCount === $columnsNeeded && $index+1 < $scoreResultsCount) {
+                echo "</tr><tr>";
+                $columnCount = 0;
+            }
+        }
+        echo "</tr>";
     }
     ?>
     <table>
-        <tr><th colspan="5">Bunnies</th></tr>
         <?php
         makeBunnyGroup(10);
         ?>
