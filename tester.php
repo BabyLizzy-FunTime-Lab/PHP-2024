@@ -454,7 +454,8 @@ _END;
         private string $ears = "<code>&nbsp;()_()</code><br>";
         private string $feet = '<code>("")("")</code><br>';
         private string $emotion;
-        private function emotionSelect() :string {
+        private array $bunnyCensus = [];
+        private function emotionSelect() :void {
             $emotions = array(
                 "happy" => "&nbsp;(^.^)<br>",
                 "surprised" => "&nbsp;(o.o)<br>",
@@ -463,21 +464,54 @@ _END;
                 "inquisitive" => "&nbsp;(?.?)<br>",
                 "thoughtful" => "&nbsp;(&.&)<br>"
             );
-            return "<code>" . $emotions[array_rand($emotions)] . "</code>";
+            $selectedEmotionName = array_rand($emotions);
+            $selectedEmotion = $emotions[$selectedEmotionName];
+            $this->emotion = "<code>" . $selectedEmotion . "</code>";
+            $this->bunnyCensus[] = $selectedEmotionName;
         }
         public function generateBunny() :string {
-            $this->emotion = $this->emotionSelect();
+            $this->emotionSelect();
             return $this->ears . $this->emotion . $this->feet;
+        }
+        public function checkScores() :void {
+            // Array count divided by 2.
+            // Then compare top row to bottom.
+            // Save result to text file.
+            print_r($this->bunnyCensus);
+            // return all saved scores ready to be added to the bunnies table.
         }
     }
     $bunnyTest = new BunnyFactory();
     echo $bunnyTest->generateBunny();
     // Now we make a table of 10 bunnies and compare top to bottom row for score.
-    // Only even numbers so we have rows of equal length.
-
+    function makeBunnyGroup($groupSize) :void {
+        // The input number must be even.
+        if($groupSize % 2 != 0) {
+            echo "The number of bunnies must be even.";
+            return;
+        }
+        $bunny = new BunnyFactory();
+        $numberOfRows = 1;
+        $columnsNeeded = $groupSize/2;
+        while ($numberOfRows <= 2) {
+            echo "<tr>";
+            for ($columns = 1; $columns <= $columnsNeeded; $columns++) {
+                echo "<td class='mathTable__data'>" . $bunny->generateBunny() . "</td>";
+                if($columns === $columnsNeeded) {
+                    echo "</tr>";
+                    $numberOfRows++;
+                }
+            }
+        }
+        // The checkScore should return the score so it can be added to the table.
+        $bunny->checkScores();
+    }
     ?>
     <table>
         <tr><th colspan="5">Bunnies</th></tr>
+        <?php
+        makeBunnyGroup(10);
+        ?>
     </table>
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
