@@ -1,63 +1,149 @@
 <?php
-function BMI($length) {
-    // Weight is in kg.
-    $minWeight = 40;
-    $maxWeight = 150;
-    echo "<tr>
-                <th style='border-bottom: 2px solid black; text-align: left;'>
-                    BMI overzicht bij een lengte van $length m
-                </th>
-            </tr>";
-    for ($weight = $minWeight; $weight <= $maxWeight; $weight += 10) {
-        $bmi = round($weight/(pow($length, 2)), 2);
-        switch ($bmi) {
-            case $bmi < 18.5:
-                $resultOfBmi = "ondergewicht";
-                break;
-            case $bmi >= 18.5 && $bmi <= 24.9:
-                $resultOfBmi = "gezond gewicht";
-                break;
-            case $bmi >= 25 && $bmi <= 30;
-                $resultOfBmi = "overgewicht";
-                break;
-            case $bmi > 30:
-                $resultOfBmi = "obesitas";
-                break;
-            default:
-                $resultOfBmi = "normaal gewicht";
+class BunnyFactory {
+    private string $ears = "<code>&nbsp;()_()</code><br>";
+    private string $feet = '<code>("")("")</code><br>';
+    private string $emotion;
+    private array $bunnyRecord = [];
+
+    /**
+     * Randomly selects an emotion for the bunny.
+     * @return void
+     */
+    private function emotionSelect() :void {
+        $emotions = array(
+            "happy" => "&nbsp;(^.^)<br>",
+            "surprised" => "&nbsp;(o.o)<br>",
+            "angry" => "&nbsp;(@.@)<br>",
+            "disappointed" => "&nbsp;(>.<)<br>",
+            "inquisitive" => "&nbsp;(?.?)<br>",
+            "thoughtful" => "&nbsp;(&.&)<br>"
+        );
+        $selectedEmotionName = array_rand($emotions);
+        $selectedEmotion = $emotions[$selectedEmotionName];
+        $this->emotion = "<code>" . $selectedEmotion . "</code>";
+        $this->bunnyRecord[] = $selectedEmotionName;
+    }
+
+    /**
+     * Generates one bunny.
+     * @return string
+     */
+    public function generateBunny() :string {
+        $this->emotionSelect();
+        return $this->ears . $this->emotion . $this->feet;
+    }
+
+    /**
+     * Calculates how many bunny pairs there are.
+     * @return int
+     */
+    private function calculateLatestScore() :int {
+        $bunnyPairCount = 0;
+        // First we calculate on what index the second row starts.
+        $bunnyCount = count($this->bunnyRecord);
+        $secondRowStartIndex = $bunnyCount/2;
+        $secondRowIndex = $secondRowStartIndex;
+        // Then compare top row to bottom row.
+        for($recordIndex = 0; $recordIndex <= $secondRowStartIndex-1; $recordIndex++) {
+            if($this->bunnyRecord[$recordIndex] === $this->bunnyRecord[$secondRowIndex]) {
+                // If top matches bottom we add to the score.
+                $bunnyPairCount++;
+            }
+            // Then we move to the next column comparison.
+            $secondRowIndex++;
         }
-        echo "<tr>
-                    <td>
-                        Bij een gewicht van $weight kg is de BMI $bmi, $resultOfBmi
-                    </td>
-                </tr>";
+        return $bunnyPairCount;
+    }
+
+    /**
+     * Saves the score to a text file it creates.
+     * @param $latestScore
+     * @return void
+     */
+    private function saveScoreToTextFile($latestScore) :void {
+        $file = fopen( "bunnyScore.txt", 'a+') or die("Cloud not write to file");
+        $textScore = "Score: " . $latestScore . "\n";
+        fwrite($file, $textScore) or die("Cloud not write to file");
+        fclose($file);
+    }
+
+    /**
+     * Reads all scores saved to the created text file.
+     * @return array
+     */
+    private function getAllScoresFromTextFile() :array {
+        // Read all scores and store them in the scoreResults array.
+        $scoreResults = [];
+        $readFile = fopen("bunnyScore.txt", 'r') or die("File not found.");
+        while (($recordedScore = fgets($readFile)) !== false) {
+            $scoreResults[] = $recordedScore;
+        }
+        fclose($readFile);
+        return $scoreResults;
+    }
+
+    /**
+     * Triggers score calculation, score saving and score retrieval
+     * @return array
+     */
+    public function getScores() :array {
+        // First we calculate the current score
+        $currentScore = $this->calculateLatestScore();
+        // Save latest score result to text file. This should be a private method.
+        $this->saveScoreToTextFile($currentScore);
+        // Returns all saved scores ready to be added to the bunnies table in an array.
+        return $this->getAllScoresFromTextFile();
     }
 }
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>BMI Calculator</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-<header>
-    <h2>BMI</h2>
-</header>
-<form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
-    <label for="length">
-        Lengte in meters:
-        <input name="length" class="inputField length" type="number" step="0.01">
-    </label>
-    <input type="submit" name="lengthBMI">
-</form>
-<table style="margin-top: 1em; margin-bottom: 3em;">
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['lengthBMI'])) {
-        $input_length = $_POST['length'];
-        BMI($input_length);
+
+/**
+ * Renders the bunnies and all the scores. The group size must be an even number.
+ * @param $groupSize
+ * @return void
+ */
+function makeBunnyGroup($groupSize) :void {
+    // The input number must be even.
+    if($groupSize % 2 != 0) {
+        echo "The number of bunnies must be even.";
+        return;
     }
+    $bunny = new BunnyFactory();
+    $numberOfRows = 1;
+    $columnsNeeded = $groupSize/2;
+    // First we render the table header.
+    echo "<tr><th colspan='$columnsNeeded'>Bunnies</th></tr>";
+    // Then we render the rows with the bunnies.
+    while ($numberOfRows <= 2) {
+        echo "<tr>";
+        for ($columns = 1; $columns <= $columnsNeeded; $columns++) {
+            echo "<td>" . $bunny->generateBunny() . "</td>";
+            if($columns === $columnsNeeded) {
+                echo "</tr>";
+                $numberOfRows++;
+            }
+        }
+    }
+    // The scores are added to the bunnies table.
+    $scoreResults = $bunny->getScores();
+    $scoreResultsCount = count($scoreResults);
+    $columnCount = 0;
+    echo "<tr>";
+    foreach ($scoreResults as $index => $score) {
+        $columnCount++;
+        if($index+1 === $scoreResultsCount) echo "<td><strong>$score</strong></td>";
+        else echo "<td>$score</td>";
+        if($columnCount === $columnsNeeded && $index+1 < $scoreResultsCount) {
+            echo "</tr><tr>";
+            $columnCount = 0;
+        }
+    }
+    echo "</tr>";
+}
+?>
+<h1>Emotional Bunnies</h1>
+<table>
+    <?php
+    // Use even numbers.
+    makeBunnyGroup(10);
     ?>
 </table>
-</body>
