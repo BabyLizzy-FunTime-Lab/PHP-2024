@@ -107,12 +107,13 @@ function makeBunnyGroup($groupSize) :void {
         echo "The number of bunnies must be even.";
         return;
     }
+    // Create a bunny factory.
     $bunny = new BunnyFactory();
-    $numberOfRows = 1;
+    // Calculate number of columns & Render the table header
     $columnsNeeded = $groupSize/2;
-    // First we render the table header.
     echo "<tr><th colspan='$columnsNeeded'>Bunnies</th></tr>";
     // Then we render the rows with the bunnies.
+    $numberOfRows = 1;
     while ($numberOfRows <= 2) {
         echo "<tr>";
         for ($columns = 1; $columns <= $columnsNeeded; $columns++) {
