@@ -550,6 +550,30 @@ _END;
         ?>
     </table>
 </section>
+<section>
+    <h2>DB access PDO query</h2>
+    <?php
+    require_once 'db/login.php';
+    try {
+        $pdo = new PDO($attr, $user, $pass, $opts);
+    }
+    catch (PDOException $e) {
+        throw new PDOException($e->getMessage(), (int)$e->getCode());
+    }
+    ?>
+    <?php
+    $query = "SELECT * FROM classics";
+    $result = $pdo->query($query);
+    while ($row = $result->fetch())
+    {
+        echo 'Author:       ' . htmlspecialchars($row['author']) . "<br>";
+        echo 'Title:        ' . htmlspecialchars($row['title']) . "<br>";
+        echo 'Category:     ' . htmlspecialchars($row['category']) . "<br>";
+        echo 'Year:         ' . htmlspecialchars($row['year']) . "<br>";
+        echo 'ISBN:         ' . htmlspecialchars($row['isbn']) . "<br><br>";
+    }
+    ?>
+</section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
 </footer>
