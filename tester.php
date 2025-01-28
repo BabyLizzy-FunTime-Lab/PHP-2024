@@ -566,12 +566,16 @@ _END;
     $result = $pdo->query($query);
     while ($row = $result->fetch())
     {
+        print_r($row);
+        echo "<br>";
         echo 'Author:       ' . htmlspecialchars($row['author']) . "<br>";
         echo 'Title:        ' . htmlspecialchars($row['title']) . "<br>";
         echo 'Category:     ' . htmlspecialchars($row['category']) . "<br>";
         echo 'Year:         ' . htmlspecialchars($row['year']) . "<br>";
         echo 'ISBN:         ' . htmlspecialchars($row['isbn']) . "<br><br>";
     }
+    // When it's done we choose to close the PDO connection manually.
+    $pdo = null;
     ?>
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
