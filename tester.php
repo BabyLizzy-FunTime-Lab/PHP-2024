@@ -578,6 +578,47 @@ _END;
     $pdo = null;
     ?>
 </section>
+<section>
+    <h2>POST data to database</h2>
+    <?php
+    require_once 'db/login.php';
+
+    try {
+        $pdo = new PDO($attr, $user, $pass, $opts);
+    }
+    catch(PDOException $e) {
+        throw new PDOException($e->getMessage(), (int)$e->getCode());
+    }
+
+    function get_post($pdo, $var)
+    {
+        return $pdo->quote($_POST[$var]);
+    }
+
+    if (isset($_POST['delete']) && isset($_POST['isbn']))
+    {
+        $isbn = get_post($pdo, 'isbn');
+        $query = "DELETE FROM classics WHERE isbn=$isbn";
+        $result = $pdo->query($query);
+    }
+    if (isset($_POST['author']) &&
+        isset($_POST['title']) &&
+        isset($_POST['category']) &&
+        isset($_POST['year']) &&
+        isset($_POST['isbn']))
+    {
+        $author = get_post($pdo, 'author');
+        $title = get_post($pdo, 'title');
+        $category = get_post($pdo, 'category');
+        $year = get_post($pdo, 'year');
+        $isbn = get_post($pdo, 'isbn');
+
+        $query = "INSERT INTO classics VALUES" . "($author, $title, $category, $year, $isbn)";
+        $result = $pdo->query($query);
+    }
+
+    ?>
+</section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
 </footer>
