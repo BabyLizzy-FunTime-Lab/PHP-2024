@@ -566,7 +566,7 @@ _END;
     $result = $pdo->query($query);
     while ($row = $result->fetch())
     {
-        print_r($row);
+//        print_r($row);
         echo "<br>";
         echo 'Author:       ' . htmlspecialchars($row['author']) . "<br>";
         echo 'Title:        ' . htmlspecialchars($row['title']) . "<br>";
@@ -616,6 +616,43 @@ _END;
         $query = "INSERT INTO classics VALUES" . "($author, $title, $category, $year, $isbn)";
         $result = $pdo->query($query);
     }
+
+    echo <<<_END
+    <form action="tester.php" method="post"><pre>
+    Author <input type="text" name="author">
+     Title <input type="text" name="title">
+  Category <input type="text" name="category">
+      Year <input type="text" name="year">
+      ISBN <input type="text" name="isbn">
+           <input type="submit" value="ADD RECORD">
+    </pre></form>
+_END;
+
+    $query = "SELECT * FROM classics";
+    $result = $pdo->query($query);
+    while ($row = $result->fetch())
+    {
+        $r0 = htmlspecialchars($row['author']);
+        $r1 = htmlspecialchars($row['title']);
+        $r2 = htmlspecialchars($row['category']);
+        $r3 = htmlspecialchars($row['year']);
+        $r4 = htmlspecialchars($row['isbn']);
+        echo <<<_END
+<pre>
+Author: $r0
+Title: $r1
+Category: $r2
+Year: $r3
+ISBN: $r4
+</pre>
+<form action='tester.php' method='post'>
+<input type="hidden" name="delete" value="yes">
+<input type="hidden" name="isbn" value='$r4'>
+<input type="submit" value="DELETE RECORD">
+</form>
+_END;
+    }
+
 
     ?>
 </section>
