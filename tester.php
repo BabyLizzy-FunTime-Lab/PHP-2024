@@ -655,7 +655,8 @@ _END;
     ?>
 </section>
 <section>
-    <h2>Creating a new Table in db</h2>
+    <h2>Creating a new Table in db and manipulating the data.</h2>
+    <img src="uploads/Demon_Succubus.png" height="200">
     <?php
     require_once 'db/login.php';
 
@@ -666,7 +667,7 @@ _END;
         throw new PDOException($e->getMessage(), (int)$e->getCode());
     }
 
-    // Make a new table.
+//    Make a new table.
 //    $query = "CREATE TABLE cats (
 //       id SMALLINT NOT NULL AUTO_INCREMENT,
 //       family VARCHAR(32) NOT NULL,
@@ -674,12 +675,58 @@ _END;
 //       age TINYINT NOT NULL,
 //       PRIMARY KEY (id)
 //    )";
+//    $result = $pdo->query($query);
 
-    $result = $pdo->query($query);
+//    Populate table.
+//    $query = "INSERT INTO cats VALUES(NULL, 'Lion', 'Leo', 4), (NULL, 'Cougar', 'Growler', 2), (NULL, 'Cheetah', 'Charly', 3)";
+//    $result = $pdo->query($query);
 
-    $query = "INSERT INTO cats VALUES(NULL, 'Lion', 'Leo', 4), (NULL, 'Cougar', 'Growler', 2), (NULL, 'Cheetah', 'Charly', 3)";
-    $result = $pdo->query($query);
+    // Delete data
+//    $query = "DELETE FROM cats WHERE name='Growler'";
+//    $result = $pdo->query($query);
+
+    // Add a new row and report the givin ID.
+//    $query = "INSERT INTO cats VALUES(NULL, 'Lynx', 'Stumpy', 5)";
+//    $result = $pdo->query($query);
+//    echo "The Insert ID was: " . $pdo->lastInsertId();
     ?>
+</section>
+<section>
+    <h2>Joining tables with queries.</h2>
+    <p>This can also be done with a NATURAL JOIN</p>
+    <?php
+    require_once 'db/login.php';
+
+    try {
+        $pdo = new PDO($attr, $user, $pass, $opts);
+    }
+    catch (PDOException $e) {
+        throw new PDOException($e->getMessage(), (int)$e->getCode());
+    }
+
+    $query = "SELECT * FROM customers";
+    $result = $pdo->query($query);
+
+    while($row = $result->fetch()) {
+        $customerName = htmlspecialchars($row['name']);
+        $customerISBN = htmlspecialchars($row['isbn']);
+
+        echo "$customerName purchased ISBN $customerISBN: <br>";
+
+        $subQuery = "SELECT * FROM classics WHERE isbn='$customerISBN'";
+        $subResult = $pdo->query($subQuery);
+        $subRow = $subResult->fetch();
+
+        $customerBook = htmlspecialchars($subRow['title']);
+        $customerAuthor = htmlspecialchars($subRow['author']);
+
+        echo "&nbsp;&nbsp; '$customerBook' by $customerAuthor<br><br>";
+    }
+    ?>
+</section>
+<section>
+    <h2>Hacking Security</h2>
+    <img src="uploads/bouncer.jpg" height="200">
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
