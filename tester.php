@@ -759,11 +759,14 @@ _END;
     <h3>Preventing JS injection</h3>
     <?php
     function mysql_fix_string($pdo, $string) {
-        if (get_magic_quotes_gpc()) $string = stripslashes($string);
+        // This is deprecated //
+        // if (get_magic_quotes_gpc()) $string = stripslashes($string); //
+        // Use this.
+        echo htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
         return $pdo->real_escape_string($string);
     }
     function mysql_entities_fix_string($pdo, $string) {
-
+        return htmlentities((mysql_fix_string($pdo, $string)));
     }
     ?>
 </section>
