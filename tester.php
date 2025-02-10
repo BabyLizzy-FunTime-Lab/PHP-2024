@@ -658,14 +658,14 @@ _END;
     <h2>Creating a new Table in db and manipulating the data.</h2>
     <img src="uploads/Demon_Succubus.png" height="200">
     <?php
-    require_once 'db/login.php';
-
-    try {
-        $pdo = new PDO($attr, $user, $pass, $opts);
-    }
-    catch (PDOException $e) {
-        throw new PDOException($e->getMessage(), (int)$e->getCode());
-    }
+//    require_once 'db/login.php';
+//
+//    try {
+//        $pdo = new PDO($attr, $user, $pass, $opts);
+//    }
+//    catch (PDOException $e) {
+//        throw new PDOException($e->getMessage(), (int)$e->getCode());
+//    }
 
 //    Make a new table.
 //    $query = "CREATE TABLE cats (
@@ -681,11 +681,11 @@ _END;
 //    $query = "INSERT INTO cats VALUES(NULL, 'Lion', 'Leo', 4), (NULL, 'Cougar', 'Growler', 2), (NULL, 'Cheetah', 'Charly', 3)";
 //    $result = $pdo->query($query);
 
-    // Delete data
+//     Delete data
 //    $query = "DELETE FROM cats WHERE name='Growler'";
 //    $result = $pdo->query($query);
 
-    // Add a new row and report the givin ID.
+//     Add a new row and report the givin ID.
 //    $query = "INSERT INTO cats VALUES(NULL, 'Lynx', 'Stumpy', 5)";
 //    $result = $pdo->query($query);
 //    echo "The Insert ID was: " . $pdo->lastInsertId();
@@ -727,6 +727,45 @@ _END;
 <section>
     <h2>Hacking Security</h2>
     <img src="uploads/bouncer.jpg" height="200">
+    <h3>Using Placeholders</h3>
+    <?php
+//    require_once 'db/login.php';
+//
+//    try {
+//        $pdo = new PDO($attr, $user, $pass, $opts);
+//    }
+//    catch (PDOException $e) {
+//        throw new PDOException($e->getMessage(), (int)$e->getCode());
+//    }
+//
+//    $statement = $pdo->prepare('INSERT INTO classics VALUES(? ,? ,? ,?, ?)');
+//
+//    $statement->bindParam(1, $author, PDO::PARAM_STR, 128);
+//    $statement->bindParam(2, $title, PDO::PARAM_STR, 128);
+//    $statement->bindParam(3, $category, PDO::PARAM_STR, 16);
+//    $statement->bindParam(4, $year, PDO::PARAM_INT);
+//    $statement->bindParam(5, $isbn, PDO::PARAM_STR, 13);
+//
+//    $author = 'Emily Bronte';
+//    $title = 'Wuthering Heights';
+//    $category = 'Classic Fiction';
+//    $year = '1847';
+//    $isbn = '9780553212587';
+//
+//    $statement->execute([$author, $title, $category, $year, $isbn]);
+//
+//    printf("%d Row inserted.\n", $statement->rowCount());
+    ?>
+    <h3>Preventing JS injection</h3>
+    <?php
+    function mysql_fix_string($pdo, $string) {
+        if (get_magic_quotes_gpc()) $string = stripslashes($string);
+        return $pdo->real_escape_string($string);
+    }
+    function mysql_entities_fix_string($pdo, $string) {
+
+    }
+    ?>
 </section>
 <footer style="margin-top: 1em; height: 4em; background-color: cadetblue; text-align: center">
 <h3>Footer</h3>
