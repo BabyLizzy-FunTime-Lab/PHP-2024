@@ -12,7 +12,10 @@
 <header>
     <h1>Test Environment</h1>
     <a href="http://localhost/PHP-2024/">Home</a> |
-    <a href="http://localhost/PHP-2024/tester.php">Test Environment</a>
+    <a href="http://localhost/PHP-2024/tester.php">Test Environment</a> |
+    <a href="http://localhost/PHP-2024/convert.php">Temp converter</a> |
+    <a href="http://localhost/PHP-2024/authenticate.php">Authenticate</a> |
+    <a href="http://localhost/PHP-2024/login&Forms.php">Login & Forms</a> |
 </header>
 <section>
     <header>
@@ -821,14 +824,14 @@ _END;
     {
         $name = get_post($pdo, 'name_login');
         $password = get_post($pdo, 'password_login');
-        echo $password;
+
         $query = "SELECT name, password FROM users WHERE name = :name";
         $statement = $pdo->prepare($query);
         $statement->execute([
             'name' => $name
         ]);
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-        print_r($user);
+
         if($user && password_verify($password, $user['password'])) {
             echo "Login worked! Welcome " . $user['name'];
         } else {
